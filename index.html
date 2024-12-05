@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SMTV影片播放器</title>
+    <!-- 引入樣式表，使用正確的相對路徑 -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 影片播放器容器 -->
+    <div class="video-container">
+        <!-- 左側主要影片區域 -->
+        <div class="left-section">
+            <!-- 主要 YouTube 播放器 
+                 src 參數說明：
+                 - enablejsapi=1：啟用 YouTube API 控制
+                 - controls=0：隱藏 YouTube 原生控制列
+                 - rel=0：關閉相關影片推薦
+                 - modestbranding=1：移除 YouTube 標誌
+            -->
+            <iframe id="youtube-player"
+                src="https://www.youtube.com/embed/ZzWBpGwKoaI?enablejsapi=1&controls=0&rel=0&modestbranding=1"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+
+            <!-- 自定義控制列 -->
+            <div class="floating-controls">
+                <!-- 播放/暫停按鈕 -->
+                <button class="control-btn" id="playPauseBtn" title="Play/Pause (Space)">▶</button>
+                
+                <!-- 音量/靜音按鈕 -->
+                <button class="control-btn" id="muteBtn" title="Mute (M)">
+                    <!-- SVG 音量圖示，包含兩種狀態：正常音量和靜音 -->
+                    <svg class="volume-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <!-- 音量開啟時的圖示 -->
+                        <g class="volume-on">
+                            <!-- 喇叭基本形狀 -->
+                            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                            <!-- 音量波紋 -->
+                            <path class="wave" d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                            <path class="wave" d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                        </g>
+                        <!-- 靜音時的圖示 -->
+                        <g class="volume-off">
+                            <!-- 喇叭基本形狀 -->
+                            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                            <!-- 靜音叉叉 -->
+                            <line x1="23" y1="9" x2="17" y2="15"/>
+                            <line x1="17" y1="9" x2="23" y2="15"/>
+                        </g>
+                    </svg>
+                </button>
+
+                <!-- 音量控制滑塊 -->
+                <div class="slider-container volume-bar" title="Volume (Up/Down Arrow)">
+                    <div class="slider" id="volumeSlider">
+                        <div class="slider-thumb"></div>
+                    </div>
+                </div>
+
+                <!-- 全螢幕按鈕 -->
+                <button class="control-btn" id="fullscreenBtn" title="Fullscreen (Enter)">⛶</button>
+            </div>
+        </div>
+
+        <!-- 右側直播影片區域 -->
+        <div class="right-section">
+            <!-- 右側直播播放器 1 
+                 src 參數說明：
+                 - channel=UCyYoY9S20IXXPLPrQWE5RfA：指定直播頻道
+                 - live_stream：自動播放當前直播
+            -->
+            <iframe id="right-player-1" class="right-video"
+                src="https://www.youtube.com/embed/live_stream?channel=UCyYoY9S20IXXPLPrQWE5RfA&enablejsapi=1&controls=0&rel=0&modestbranding=1"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+            <!-- 右側直播播放器 2 -->
+            <iframe id="right-player-2" class="right-video"
+                src="https://www.youtube.com/embed/live_stream?channel=UCyYoY9S20IXXPLPrQWE5RfA&enablejsapi=1&controls=0&rel=0&modestbranding=1"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+            <!-- 右側直播播放器 3 -->
+            <iframe id="right-player-3" class="right-video"
+                src="https://www.youtube.com/embed/live_stream?channel=UCyYoY9S20IXXPLPrQWE5RfA&enablejsapi=1&controls=0&rel=0&modestbranding=1"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+    <!-- 確保這些腳本在 body 結束標籤前載入 -->
+    <script>
+        // 添加全域錯誤處理
+        window.onerror = function(msg, url, line, col, error) {
+            console.error('Global error:', {msg, url, line, col, error});
+            return false;
+        };
+    </script>
+    <script src="js/player.js"></script>
+</body>
+</html>

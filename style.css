@@ -1,0 +1,224 @@
+/**
+ * 影片播放器控制介面樣式表
+ 定義所有播放器控制元素的視覺外觀
+ */
+
+/* 影片播放器容器樣式
+ * 使用 grid 布局來排列左側主影片和右側直播影片
+ */
+.video-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;  /* 左側佔 2/3，右側佔 1/3 */
+    gap: 10px;  /* 區塊之間的間距 */
+    height: 100vh;  /* 容器高度佔滿整個視窗 */
+    background: #000;  /* 背景色設為黑色 */
+}
+
+/* 左側主要影片區域 */
+.left-section {
+    position: relative;  /* 用於定位 floating-controls */
+    height: 100%;
+}
+
+/* 右側直播影片區域 */
+.right-section {
+    display: flex;
+    flex-direction: column;  /* 垂直排列三個直播影片 */
+    gap: 10px;  /* 直播影片之間的間距 */
+    height: 100%;
+}
+
+/* YouTube iframe 播放器基本樣式 */
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #000;
+}
+
+/* 右側直播影片的容器 */
+.right-video {
+    flex: 1;  /* 平均分配高度 */
+    min-height: 0;  /* 防止 flex 子元素溢出 */
+}
+
+/* 懸浮控制列容器 
+ * 這是顯示在影片下方的控制面板
+ * position: fixed 確保控制列永遠固定在畫面底部
+ * transform: translateX(-50%) 配合 left: 50% 實現水平置中
+ */
+.floating-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 40px;  /* 距離底部的距離 */
+    transform: translateX(-50%);
+    padding: 15px 25px;
+    /* 半透明深色背景 */
+    background: rgba(28, 32, 48, 0.6);
+    /* 毛玻璃效果 */
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    /* 陰影效果：外陰影和內陰影的組合 */
+    box-shadow: 
+        0 10px 20px rgba(0, 0, 0, 0.2),  /* 外陰影 */
+        0 2px 8px rgba(255, 255, 255, 0.1) inset;  /* 內陰影 */
+    /* Flexbox 布局，使子元素水平排列 */
+    display: flex;
+    align-items: center;
+    gap: 15px;  /* 元素之間的間距 */
+    /* 邊框效果 */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* 平滑過渡效果 */
+    transition: all 0.3s ease, opacity 0.5s ease;
+    /* 確保控制列永遠顯示在最上層 */
+    z-index: 2147483647;
+    opacity: 1;
+}
+
+/* 當滑鼠懸停在控制列上時，背景變得更不透明 */
+.floating-controls:hover {
+    background: rgba(28, 32, 48, 0.75);
+}
+
+/* 控制按鈕（播放/暫停、靜音、全螢幕等按鈕）的基本樣式 */
+.control-btn {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 12px;
+    /* 半透明背景配合毛玻璃效果 */
+    background: rgba(28, 32, 48, 0.6);
+    backdrop-filter: blur(12px);
+    /* 陰影效果 */
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.2),
+        0 2px 4px rgba(255, 255, 255, 0.1) inset;
+    color: #8ab4f8;  /* 按鈕顏色 */
+    font-size: 18px;
+    cursor: pointer;
+    /* 平滑過渡效果 */
+    transition: all 0.3s ease;
+    /* Flexbox 使圖示置中 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 按鈕懸停效果 */
+.control-btn:hover {
+    background: rgba(28, 32, 48, 0.75);
+    color: #adc6fa;  /* 懸停時顏色變亮 */
+    transform: translateY(-2px);  /* 輕微上浮效果 */
+    /* 懸停時陰影加強 */
+    box-shadow: 
+        0 6px 16px rgba(0, 0, 0, 0.25),
+        0 2px 4px rgba(255, 255, 255, 0.15) inset;
+}
+
+/* 音量控制條的容器 */
+.volume-bar {
+    width: 100px;
+    margin: 0 10px;
+    position: relative;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* 音量控制條的滑塊（藍色部分） */
+.slider {
+    position: absolute;
+    height: 100%;
+    width: 0;  /* 初始寬度，會通過 JavaScript 動態調整 */
+    /* 漸層背景 */
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+    pointer-events: none;  /* 確保滑鼠事件穿透到容器 */
+}
+
+/* 音量控制條的圓形把手 */
+.slider-thumb {
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+    cursor: grab;
+}
+
+/* 音量圖示的基本樣式 */
+.volume-icon {
+    transition: all 0.3s ease;
+    stroke: #8ab4f8;
+}
+
+/* 音量開啟時的圖示狀態 */
+.volume-on {
+    display: block;
+}
+
+/* 靜音時的圖示狀態 */
+.volume-off {
+    display: none;
+}
+
+/* 當處於靜音狀態時的樣式變化 */
+.control-btn.muted .volume-on {
+    display: none;
+}
+
+.control-btn.muted .volume-off {
+    display: block;
+    stroke: #ff6b6b;  /* 靜音時使用紅色 */
+    animation: muteGradient 2s linear infinite;  /* 添加動畫效果 */
+}
+
+/* 靜音圖示的動畫效果 */
+@keyframes muteGradient {
+    0% { stroke: #ff6b6b; }
+    50% { stroke: #ff8080; }
+    100% { stroke: #ff6b6b; }
+}
+
+/* 靜音時音量條的視覺效果 */
+.control-btn.muted + .volume-bar .slider {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 音量圖示懸浮效果 */
+.control-btn:hover .volume-icon {
+    stroke: #adc6fa;
+}
+
+/* 新增音量拖曳效果 */
+.volume-bar {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.volume-bar .slider {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    border-radius: 2px;
+    transition: width 0.2s ease;
+}
+
+.volume-bar:hover {
+    cursor: pointer;
+}
+
+.slider {
+    pointer-events: none;  /* 確保滑鼠事件穿透到容器 */
+}
